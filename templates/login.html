@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log In
+{% endblock %}
+
+{% block main %}
+<br class="user-select-none">
+<div class="text-center">
+    <h1>Welcome back to TaskTastic!</h1>
+    <p>Organizing your life, one task at a time</p>
+    <br class="user-select-none">
+    <h3>Login</h3><br class="user-select-none">
+    <form action="/login" method="post">
+        <div class="w-50 mx-auto">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="username" placeholder="Username" autocomplete="off" name="username">
+                <label for="Username">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="off" name="password">
+                <label for="password">Password</label>
+            </div>
+        </div>
+        <button class="btn btn-outline-primary btn-lg" type="submit">Log In</button>
+    </form>
+</div>
+
+{% endblock %}

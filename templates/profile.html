@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+<br class="user-select-none">
+<div class="text-center mb-4">
+    <h1>{{ user.username }}'s profile</h1>
+</div>
+<h3 class="text-center">Information</h3>
+<div class="container border border-primary rounded w-75 mb-5 p-5 fs-3">
+    <hr>
+    <div class="w-75 text-wrap mx-auto d-flex justify-content-between">
+        <div class="d-inline-block">Current spaces: </div><div class="text-success d-inline-block">{{ user.current_spaces }}</div>
+    </div>
+    <hr>
+    <div class="w-75 text-wrap mx-auto d-flex justify-content-between">
+        <div class="d-inline-block">Completed tasks: </div><div class="text-success d-inline-block">{{ user.completed_tasks }}</div>
+    </div>
+    <hr>
+    <div class="w-75 text-wrap mx-auto d-flex justify-content-between">
+        <div class="d-inline-block">Total spaces: </div><div class="text-secondary d-inline-block">{{ user.total_spaces }}</div>
+    </div>
+    <hr>
+    <div class="w-75 text-wrap mx-auto d-flex justify-content-between">
+        <div class="d-inline-block">Total tasks: </div><div class="text-secondary d-inline-block">{{ user.total_tasks }}</div>
+    </div>
+    <hr>
+    <div class="w-75 text-wrap mx-auto d-flex justify-content-between">
+        <div class="d-inline-block">Joined on: </div><div class="d-inline-block">{{ user.date }}</div>
+    </div>
+    <hr>
+</div>
+<h3 class="text-center">Account</h3>
+<div class="container border border-primary rounded w-75">
+    <br class="user-select-none">
+    <div class="w-75 mx-auto">
+        <p>Change Username:</p>
+        <form action="/change_username" method="post">
+            <div class="form-group mb-5 text-center">
+                <input type="text" class="form-control mb-3 mt-3" placeholder="{{ user.username }}" autocomplete="off" style="min-width: 150px" name="change_username">
+                <button class="btn btn-outline-primary mb-3 mt-3" type="submit">Change Username</button>
+            </div>
+        </form>
+        <p>Change password:</p>
+        <form action="/change_password" method="post">
+            <div class="form-group mb-3 text-center">
+                <input type="password" class="form-control mb-3 mt-3" placeholder="Old Password" style="min-width: 150px" name="old_password">
+                <input type="password" class="form-control mb-3 mt-3" placeholder="New Password" style="min-width: 150px" name="new_password">
+                <input type="password" class="form-control mb-3 mt-3" placeholder="Confirm Password" style="min-width: 150px" name="confirm_password">
+                <button class="btn btn-outline-primary" type="submit">Change Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

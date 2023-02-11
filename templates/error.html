@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block main %}
+    <!-- https://memegen.link/ -->
+    <div class="text-center">
+        <img alt="{{ top }}" class="border img-fluid" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://memes.co.in/memes/update/uploads/2021/07/dTcAHZc.jpeg&width=400" title="{{ top }}">
+    </div>
+{% endblock %}

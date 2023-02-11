@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+{% autoescape false %}
+<div class="text-center mb-4">
+    <h1>History</h1>
+</div>
+<div class="container table-responsive-lg text-center">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center border-end border-primary" style="width: 3% !important"><strong>#</strong></th>
+                <th class="text-start"><strong>Activity</strong></th>
+                <th class="text-start"><strong>Description</strong></th>
+                <th class="text-end"><strong>Time</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in history %}
+            <tr>
+                <td class="text-center border-end border-primary">{{ loop.index }}</td>
+                <td class="text-start">{{ activity.activity }}</td>
+                <td class="text-start">{{ activity.description }}</td>
+                <td class="text-end">{{ activity.time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endautoescape %}
+
+{% endblock %}

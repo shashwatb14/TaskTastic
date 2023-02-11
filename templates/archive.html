@@ -1,0 +1,181 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Archive
+{% endblock %}
+
+{% block main %}
+<div class="container table-responsive-lg text-center">
+    <h1>Archive</h1>
+    <hr>
+    <br class="user-select-none">
+    <h3 class="text-center">Tasks</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 3% !important"><strong>#</strong></th>
+                <th class="text-start"><strong>Task Title</strong></th>
+                <th class="text-start"><strong>Space</strong></th>
+                <th class="text-center"><strong>Status</strong></th>
+                <th class="text-center"><strong>Set Deadline</strong></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Last update</h6></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Created on</h6></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Archived on</h6></th>
+                <th class="text-center" style="width: 5% !important"><strong>Restore</strong></th>
+                <th class="text-center" style="width: 5% !important"><strong>Delete</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in archive_tasks %}
+            <tr>
+                <td class="text-center align-middle">{{ loop.index }}</td>
+                <td class="text-start align-middle">{{ task.title }}</td>
+                <td class="text-start align-middle">
+                    {% for space in spaces %}
+                        {% if space.id == task.space_id %}
+                            {{ space.name }}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td class="text-center align-middle">
+                {% if task.status == "Todo" %}
+                    <div class="badge rounded-pill bg-primary">{{ task.status }}</div>
+                    {% elif task.status == "In Progress" %}
+                    <div class="badge rounded-pill bg-info">{{ task.status }}</div>
+                    {% else %}
+                    <div class="badge rounded-pill bg-success">{{ task.status }}</div>
+                    {% endif %}
+                </td>
+                <td class="text-center align-middle">
+                    {% if task.date == "No date provided" and task.time == "No time provided" %}
+                    <div class="text-muted align-middle">No set deadline</div>
+                    {% else %}
+                    {{ task.date }} {{ task.time }}
+                    {% endif %}
+                </td>
+                <td class="text-end text-muted align-middle"><h6>{{ task.last_update }}</h6></td>
+                <td class="text-end text-muted align-middle"> <h6>{{ task.created }}</h6></td>
+                <td class="text-end text-muted align-middle"> <h6>{{ task.archived }}</h6></td>
+                <td class="text-center align-middle">
+                    <form action="/restore_task/{{ task.space_id }}/{{ task.id }}" method="post">
+                        <button class="btn btn-outline-primary btn-sm" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+                <td class="text-center align-middle">
+                    <form action="/del_archive/{{ task.space_id }}/{{ task.id }}" method="post">
+                        <div class="modal" id="delArchive-{{ task.id }}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete Task</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to permanently delete this task?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-outline-primary">Yes</button>
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn-outline-primary btn-sm" type="submit" data-bs-toggle="modal" data-bs-target="#delArchive-{{ task.id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br class="user-select-none">
+    <hr>
+    <br class="user-select-none">
+    <h3 class="text-center">Spaces</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 3% !important"><strong>#</strong></th>
+                <th class="text-start"><strong>Name</strong></th>
+                <th class="text-start"><strong>Description</strong></th>
+                <th class="text-center"><strong>Tasks</strong></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Last update</h6></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Created on</h6></th>
+                <th class="text-end text-muted" style="width: 8.6% !important"><h6>Archived on</h6></th>
+                <th class="text-center" style="width: 5% !important"><strong>Restore</strong></th>
+                <th class="text-center" style="width: 5% !important"><strong>Delete</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for space in archive_spaces %}
+            <tr>
+                <td class="text-center align-middle">{{ loop.index }}</td>
+                <td class="text-start align-middle">{{ space.name }}</td>
+                <td class="text-start align-middle">
+                    {% if space.description == "No description" %}
+                    <div class="text-muted"><em>{{ space.description }}</em></div>
+                    {% else %}
+                        {{ space.description }}
+                    {% endif %}
+                </td>
+                <td class="text-center align-middle">{{ space.no_of_tasks }}</td>
+                <td class="text-end text-muted align-middle"><h6>{{ space.last_update }}</h6></td>
+                <td class="text-end text-muted align-middle"> <h6>{{ space.time }}</h6></td>
+                <td class="text-end text-muted align-middle"> <h6>{{ space.archived }}</h6></td>
+                <td class="text-center align-middle">
+                    <form action="/restore_space/{{ space.id }}" method="post">
+                        <button class="btn btn-outline-primary btn-sm" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                                <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+                <td class="text-center align-middle">
+                    <form action="/del_archive/space/{{ space.id }}" method="post">
+                        <div class="modal" id="delArchiveSpace-{{ space.id }}">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Delete Space</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to permanently delete this space?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-outline-primary">Yes</button>
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <button class="btn btn-outline-primary btn-sm" type="submit" data-bs-toggle="modal" data-bs-target="#delArchiveSpace-{{ space.id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
