@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block main %}
+<div class="text-center mb-4">
+    <h1>TaskTastic</h1>
+    <p>Organizing your life, one task at a time</p>
+</div>
+<div class="text-center mb-2">
+    <p><h3 class="d-inline-block me-2">Current Spaces</h3>
+    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSpace">Add space</button></p>
+</div>
+<form action="/" method="post">
+    <div class="modal" id="addSpace">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Space</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Give a name (required)
+                    <input type="text" class="form-control" autocomplete="off" autofocus placeholder="Name (required)" name="space_name">
+                    <p>
+                        <div class="form-group">
+                        <label class="form-label mt-4">Give a description (optional)</label>
+                        <textarea class="form-control" placeholder="Description (optional)" rows="4" spellcheck="false" name="description"></textarea>
+                      </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Add Space</button>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{% for space in spaces %}
+<div class="container w-100">
+    <div class="card border-primary mb-3 mx-auto">
+        <div class="card-header d-flex justify-content-between">
+            <div class="d-inline-block">
+                <h3 class="card-title">{{ space.name }}</h3>
+            </div>
+            <div class="d-inline-block text-muted">
+                <form action="/edit_space/{{ space.id }}" method="post">
+                    <div class="modal" id="editSpace-{{ space.id }}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Space</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Change name
+                                    <input type="text" class="form-control" autocomplete="off" autofocus placeholder="{{ space.name }}" name="space_name">
+                                    <p>
+                                        <div class="form-group">
+                                        <label class="form-label mt-4">Change description</label>
+                                        <textarea class="form-control" placeholder="{{ space.description }}" rows="3" spellcheck="false" name="description"></textarea>
+                                    </div>
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-outline-primary">Save changes</button>
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form action="/arch_space/{{ space.id }}" method="post">
+                    <button class="btn btn-outline-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#editSpace-{{ space.id }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                            <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1V2zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5H2zm13-3H1v2h14V2zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if space.description == "No description" %}
+            <p class="card-text text-muted"><em>{{ space.description }}</em></p>
+            {% else %}
+            <p class="card-text">{{ space.description }}</p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-muted d-flex justify-content-between">
+            <div class="border border-secondary p-2 rounded">Created: {{ space.time }}</div>
+            <div class="border border-secondary p-2 rounded">Last updated: {{ space.last_update }}</div>
+            <div class="border border-secondary p-2 rounded">Tasks: {{ space.no_of_tasks }}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}
