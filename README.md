@@ -1,5 +1,6 @@
 # **TaskTastic - A task management web application**
 ## [**Video Demo**](https://youtu.be/bLz8LOU2JMI)
+![Registration page](./tasktastic_registration.png)
 ## **Description**
 TaskTastic is a task management web application with intention of keeping users' tasks and assignments organized. Targeted to a younger audience, TaskTastic has many unique features including the option to create different "spaces" to organize tasks, an archive, a history, and a profile page.
 
